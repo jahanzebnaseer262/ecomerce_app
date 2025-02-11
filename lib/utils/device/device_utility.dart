@@ -34,11 +34,11 @@ static bool isLandscapeOrientation(BuildContext context){
     SystemChrome.setEnabledSystemUIMode(enable? SystemUiMode.immersiveSticky: SystemUiMode.edgeToEdge);
   }
 
-  static double getScreenHeight(){
+  static double getScreenHeight(BuildContext context){
     return MediaQuery.of(Get.context!).size.height;
   }
 
-  static double getScreenWidth(){
+  static double getScreenWidth(BuildContext context){
     return MediaQuery.of(Get.context!).size.width;
   }
 

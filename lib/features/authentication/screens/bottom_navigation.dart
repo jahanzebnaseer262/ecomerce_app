@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+import '../../personalization/screens/setting/settings.dart';
+import '../../shop/screens/shop.dart';
+import '../../shop/screens/wishlist/wish_list.dart';
+import 'home/home.dart';
+
 class NavigationMenu extends StatelessWidget {
   const NavigationMenu({super.key});
 
@@ -16,8 +21,8 @@ class NavigationMenu extends StatelessWidget {
             ()=> NavigationBar(
           height: 80,
           elevation: 0,
-        selectedIndex: NavigationController.controller.selectedIndex.value,
-        onDestinationSelected: (index)=> NavigationController.controller.selectedIndex.value=index,
+        selectedIndex: controller.selectedIndex.value,
+        onDestinationSelected: (index)=> controller.selectedIndex.value=index,
           backgroundColor: darkMode? TColors.black : TColors.white,
            indicatorColor: darkMode? TColors.white.withOpacity(0.1) : TColors.black.withOpacity(0.1),
           destinations: const [
@@ -28,20 +33,20 @@ class NavigationMenu extends StatelessWidget {
           ],
         ),
       ),
-      body: Obx(()=>NavigationController.controller.screen[NavigationController.controller.selectedIndex.value]
+      body: Obx(()=>controller.screen[controller.selectedIndex.value]
       )
     );
   }
 }
 
 class NavigationController extends GetxController {
-  static NavigationController get controller => Get.find();
+  // static NavigationController get controller => Get.find();
   final Rx<int> selectedIndex = 0.obs;
   final screen = [
-    Container(color: Colors.green,),
-    Container(color: Colors.red,),
-    Container(color: Colors.purple,),
-    Container(color: Colors.blue,)
+    const HomeScreen(),
+    const ShopScreen(),
+    const WishList(),
+    const  Settings()
   ];
 }
 

@@ -12,7 +12,6 @@ import '../../controllers/onboarding_controller.dart';
 import 'oboarding_skip.dart';
 import 'onboarding_dot_navigation.dart';
 import 'onboarding_page.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
@@ -79,7 +78,7 @@ class OnBoardingButton extends StatelessWidget {
           onPressed: () {
             return OnboardingController.instance.nextPage();
           },
-          child: Icon(CupertinoIcons.arrow_right),
+          child: const Icon(CupertinoIcons.arrow_right),
         )
 
 

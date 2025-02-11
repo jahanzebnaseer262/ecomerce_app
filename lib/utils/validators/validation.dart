@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 
 class TValidator{
   static String? validateEmail(String? value){
