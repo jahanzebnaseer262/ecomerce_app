@@ -1,6 +1,7 @@
 
 import 'package:e_commerce/common/widgets/appbar.dart';
 import 'package:e_commerce/features/authentication/screens/home/promo_slider.dart';
+import 'package:e_commerce/features/personalization/controllers/user_controller.dart';
 import 'package:e_commerce/features/shop/screens/sub_category/sub_category.dart';
 import 'package:flutter/material.dart';
 import '../../../../common/custom_shapes/containers/primary_header_container.dart';
@@ -24,6 +25,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller= Get.put(UserController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -43,12 +45,14 @@ class HomeScreen extends StatelessWidget {
                               .labelMedium!
                               .apply(color: TColors.grey),
                         ),
-                        Text(
-                          TTexts.homeAppbarSubTitle,
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineSmall!
-                              .apply(color: TColors.textWhite),
+                        Obx(
+                              ()  =>  Text(
+                           controller.user.value.fullName ,
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall!
+                                .apply(color: TColors.textWhite),
+                          ),
                         )
                       ],
                     ),
@@ -107,6 +111,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             children: [
             const  TPromoSlider(),
+
            const   SizedBox(height: TSizes.spaceBtwSections),
 
               //heading
