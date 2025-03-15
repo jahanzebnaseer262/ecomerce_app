@@ -1,8 +1,9 @@
+import 'dart:async';
+
 import 'package:e_commerce/data/repositries/authentication/authentication_repositry.dart';
 import 'package:e_commerce/data/repositries/user/user_repository.dart';
 import 'package:e_commerce/user_model.dart';
-import 'package:e_commerce/utils/popups/loaders.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -99,7 +100,7 @@ Future deleteAccountWarningPopUp(){
       title: 'Delete Account',
       middleText: 'Are you sure you want to delete your account',
       confirm: ElevatedButton(
-          onPressed: (){},
+          onPressed: ()async =>deleteUserAccount(),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.red, side:const BorderSide(color: Colors.red)),
 
           child: Padding(
@@ -115,7 +116,7 @@ Future deleteAccountWarningPopUp(){
 
 void deleteUserAccount() async {
   ///First reAuthenticate user
-  final auth= AuthenticationRepository.instance;
+  final auth = AuthenticationRepository.instance;
   final provider = supaBase.auth.currentSession?.user.appMetadata['provider'];
 
   if (provider != null) {
@@ -123,6 +124,9 @@ void deleteUserAccount() async {
     if (provider == 'google') {
       await supaBase.auth.signInWithOAuth(provider.google);
       print("Re-authenticating with Google...");
+      final userId = supaBase.auth.currentUser?.id;
+      await supaBase.auth.admin.deleteUser(userId!);
+      print('✅ User deleted from authentication!');
       //await supaBase.auth.de
     }
     // If user signed in using Email & Password
@@ -132,14 +136,68 @@ void deleteUserAccount() async {
         shouldCreateUser: false, // Ensures it's only for existing users
       );
       print("Re-verification email sent!");
+      if (supaBase.auth.currentUser?.emailConfirmedAt != null) {
+        final userId = supaBase.auth.currentUser?.id;
+        await supaBase.auth.admin.deleteUser(userId!);
+        print('✅ User deleted from authentication!');
+      } else {
+        print('email id not verified yet');
+      }
+    }
+  }
+}
+
+  var imageUrl = RxString('');
+
+  Future<void> pickAndUploadImage() async {
+    try {
+      // Pick Image
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        withData: true, // Ensure binary data is available
+      );
+
+      if (result == null) return; // User canceled
+
+      // Get file name & bytes
+      final fileBytes = result.files.single.bytes;
+      final fileName = 'uploads/${DateTime.now().millisecondsSinceEpoch}.jpeg';
+
+      if (fileBytes == null) {
+        Get.snackbar("Error", "Failed to read image data");
+        return;
+      }
+
+      // ✅ Upload the file to Supabase Storage
+      await supaBase.storage.from('uploads').uploadBinary(
+        fileName,
+        fileBytes,
+        fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
+      );
+
+      // ✅ Get Public URL AFTER uploading
+      String publicUrl = supaBase.storage.from('uploads').getPublicUrl(fileName);
+
+      // ✅ Save the URL to Supabase Table
+      Map<String, dynamic> json = {'profilePicture': publicUrl};
+
+      final id = supaBase.auth.currentUser?.id;
+      if (id != null) {
+        await userRepository.updateSingleField(id, json);
+      }
+
+      // ✅ Update local state
+      user.value.profilePicture = publicUrl;
+
+      Get.snackbar("Success", "Image uploaded successfully!");
+    } catch (e) {
+      Get.snackbar("Error", "Upload failed: $e");
+      print("supabase excepetion: $e");
     }
   }
 
 
 
 
-
-
-}
 
 }

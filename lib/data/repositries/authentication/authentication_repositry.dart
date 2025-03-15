@@ -34,15 +34,17 @@ class AuthenticationRepository extends GetxController {
     } else if(session==null){
       Get.offAll(() => const VerifyEmailScreen());
     }
-    else if(deviceStorage.read('isFirstTime') == null){
-
-        deviceStorage.write('isFirstTime', true);
-
+    else if(deviceStorage.read('isFirstTime') == null) {
+      deviceStorage.write('isFirstTime', true);
 
       deviceStorage.read("isFirstTime") != true
           ? Get.offAll(const LoginScreen())
           : Get.offAll(const OnBoardingScreen());
+
     }
+
+
+
   }
 
   //local storage

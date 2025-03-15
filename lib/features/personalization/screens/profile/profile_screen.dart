@@ -7,7 +7,6 @@ import 'package:e_commerce/features/personalization/screens/profile/widgets/prof
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:get/get.dart';
-import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/size.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -30,12 +29,19 @@ class ProfileScreen extends StatelessWidget {
                 width: double.infinity,
                 child: Column(
                   children: [
-                  const   TRoundedImage(
-                        imageUrl: TImages.google,
-                    width: 80,
-                      height: 80,
-                    ),
-                    TextButton(onPressed: (){},
+                  Obx(
+                    () {
+                      final image= controller.user.value.profilePicture;
+                      return  TRoundedImage(
+
+                          imageUrl: image,
+                          width: 80,
+                          height: 80,
+                        isNetworkImage: true,
+                        );
+                    }
+                  ),
+                    TextButton(onPressed: ()=>controller.pickAndUploadImage(),
                         child: const Text('Change Profile picture'))
                   ],
                 ),
@@ -98,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
               const    SizedBox(height: TSizes.spaceBtwItems,),
               Center(
                 child: TextButton(
-                    onPressed: (){},
+                    onPressed: ()=>controller.deleteAccountWarningPopUp(),
                     child: const Text('Close Account',
                       style: TextStyle(color: Colors.red),)),
               )

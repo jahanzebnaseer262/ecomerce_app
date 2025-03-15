@@ -1,13 +1,11 @@
 
 import 'package:e_commerce/data/repositries/authentication/authentication_repositry.dart';
 import 'package:e_commerce/features/authentication/controllers/sign_up/verify_email_controller.dart';
-import 'package:e_commerce/features/authentication/screens/login/login.dart';
 import 'package:e_commerce/utils/helpers/helper_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../../common/widgets/widgets_login_signup/Success/success_screen.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/size.dart';
 import '../../../../utils/constants/text_strings.dart';

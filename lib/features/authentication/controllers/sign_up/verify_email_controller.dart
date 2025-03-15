@@ -1,8 +1,6 @@
 import 'package:e_commerce/common/widgets/widgets_login_signup/Success/success_screen.dart';
 import 'package:e_commerce/utils/constants/image_strings.dart';
 import 'package:e_commerce/utils/constants/text_strings.dart';
-import 'package:e_commerce/utils/popups/loaders.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'dart:async';

@@ -1,4 +1,3 @@
-import 'package:e_commerce/features/authentication/screens/bottom_navigation.dart';
 import 'package:e_commerce/utils/validators/validation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

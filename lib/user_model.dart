@@ -1,5 +1,4 @@
 import 'package:e_commerce/utils/formatters/formatters.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserModel {
   final String id;

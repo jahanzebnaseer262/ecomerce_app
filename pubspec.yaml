@@ -57,7 +57,9 @@ dependencies:
   flutter_rating_bar: any
   supabase_flutter: any
   google_sign_in: any
-
+  image_picker: any
+  file_picker: any
+  uuid: ^4.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

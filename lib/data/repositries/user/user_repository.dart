@@ -37,12 +37,7 @@ class UserRepository {
   Future<UserModel?> fetchUserDetails(String userId) async {
     try {
       // Fetch user data from Supabase
-      final response = await supabase.from('users').select().eq('id', userId).single(); // Get a single user record
-
-      if (response == null) {
-        print('⚠️ User not found!');
-        return null;
-      }
+      final response = await supabase.from('users').select().eq('id', userId).single();
 
       // Convert the response to UserModel
       final user = UserModel.fromJson(response);

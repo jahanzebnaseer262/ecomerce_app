@@ -1,3 +1,4 @@
+import 'package:e_commerce/upload_test.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
@@ -29,5 +30,5 @@ Future<void> main() async{
 
 
 
-  runApp(const App());
+  runApp( const App());
 }
