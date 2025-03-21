@@ -6,49 +6,55 @@ import '../../../../common/custom_shapes/containers/circular_container.dart';
 import '../../../../common/images/round_image.dart';
 import '../../../../utils/constants/image_strings.dart';
 import '../../../../utils/constants/size.dart';
-class TPromoSlider extends StatelessWidget
+import '../../../shop/controllers/banners_controller.dart';
 
-{
+class TPromoSlider extends StatelessWidget {
   const TPromoSlider({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    final controller= Get.put(HomeController());
+    final controller = Get.put(BannerController());
+
     return Column(
-      children: [
-        CarouselSlider(
+    children: [
+    Obx(() {
+    if (controller.banners.isEmpty) {
+    return const Center(child: CircularProgressIndicator()); // Show loading indicator
+    }
 
-          options: CarouselOptions(
-autoPlay: true,
-            viewportFraction: 0.5,
-            onPageChanged:(index,_) => controller.updatePage(index),
-          ),
-          items: const [
-            TRoundedImage(imageUrl: TImages.banner1),
-            TRoundedImage(imageUrl: TImages.banner2),
-            TRoundedImage(imageUrl: TImages.banner3),
-          ],
-        ),
-        const    SizedBox(height: TSizes.spaceBtwItems,),
-        Obx(
-            ()=> Row(
-            children: [
-              for(int i=0; i<3; i++)
-                 TCircularContainer(
-                margin: const EdgeInsets.only(right: 10),
-                width: 20,
-                height: 5,
-                backGroundColor: controller.selectedIndicator.value==i ? Colors.green : Colors.grey ,
+    return CarouselSlider(
+    options: CarouselOptions(
+    autoPlay: true,
+    viewportFraction: 0.8,
+    onPageChanged: (index, _) => controller.updatePage(index),
+    ),
+    items: controller.banners
+        .map((url) => Image.network(url))
+        .toList(),
+    );
+    }),
+    const SizedBox(height: TSizes.spaceBtwItems,),
+    Obx(
+    ()=> Row(
+    children: [
+    for(int i=0; i<3; i++)
+    TCircularContainer(
+    margin: const EdgeInsets.only(right: 10),
+    width: 20,
+    height: 5,
+    backGroundColor: controller.selectedIndicator.value==i ? Colors.green : Colors.grey ,
 
-              )
+    )
 
-            ],
-          ),
-        )
+    ],
+    )
+    ,
+    )
 
-      ],
+    ]
+    ,
     );
   }
 }

@@ -1,7 +1,7 @@
-
 import 'package:e_commerce/common/widgets/appbar.dart';
 import 'package:e_commerce/features/authentication/screens/home/promo_slider.dart';
 import 'package:e_commerce/features/personalization/controllers/user_controller.dart';
+import 'package:e_commerce/features/shop/controllers/category_controller.dart';
 import 'package:e_commerce/features/shop/screens/sub_category/sub_category.dart';
 import 'package:flutter/material.dart';
 import '../../../../common/custom_shapes/containers/primary_header_container.dart';
@@ -25,7 +25,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller= Get.put(UserController());
+    final controller = Get.put(UserController());
+    final categoryController = Get.put(CategoryController());
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -40,25 +41,28 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Text(
                           TTexts.homeAppbarTitle,
-                          style: Theme.of(context)
+                          style: Theme
+                              .of(context)
                               .textTheme
                               .labelMedium!
                               .apply(color: TColors.grey),
                         ),
                         Obx(
-                              ()  =>  Text(
-                           controller.user.value.fullName ,
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall!
-                                .apply(color: TColors.textWhite),
-                          ),
+                              () =>
+                              Text(
+                                controller.user.value.fullName,
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .headlineSmall!
+                                    .apply(color: TColors.textWhite),
+                              ),
                         )
                       ],
                     ),
                     actions: [
                       TCartCounterIcon(
-                        onPressed:()=> Get.to(()=> const CartScreen()),
+                        onPressed: () => Get.to(() => const CartScreen()),
                         iconColor: Colors.white,
                       ),
                     ],
@@ -85,53 +89,66 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(
                           height: TSizes.spaceBtwItems,
                         ),
-                        SizedBox(
-                          height: 100,
-                          child: ListView.builder(
-                              itemCount: 6,
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                return TVerticalPaddingWidget(
-                                  image: TImages.google,
-                                  title: 'Shoe Category',
-                                  onTap: ()=> Get.to(()=> const SubCategoriesScreen()),
-                                );
-                              }),
+                        Obx(() {
+                          if (categoryController.isLoading.value) {return Text(
+                              'fetching');}
+                          if (categoryController.featuredCategories.isEmpty)
+                           {
+                             return Center(child: Text('No data found',
+                               style: Theme.of(context).textTheme.bodyMedium!.apply(color: Colors.white),));}
+                          return SizedBox(
+                            height: 100,
+                            child: ListView.builder(
+                                itemCount: categoryController.featuredCategories.length,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) {
+                                  final category = categoryController.featuredCategories[index];
+                                  return TVerticalPaddingWidget(
+                                    image: category.image,
+                                    title: category.name,
+                                    onTap: () =>
+                                        Get
+                                            .to(() => const SubCategoriesScreen()),
+                                  );
+                                }),
+                          );
+                        }
                         )
                       ],
                     ),
                   ),
-                const  SizedBox(height: TSizes.spaceBtwSections,)
+                  const SizedBox(height: TSizes.spaceBtwSections,)
                 ],
               ),
             ),
             //Body
             Padding(
               padding: const EdgeInsets.all(TSizes.defaultSpace),
-          child: Column(
-            children: [
-            const  TPromoSlider(),
+              child: Column(
+                children: [
+                  const TPromoSlider(),
 
-           const   SizedBox(height: TSizes.spaceBtwSections),
+                  const SizedBox(height: TSizes.spaceBtwSections),
 
-              //heading
-              TSectionHeading(text: 'Popular Products', onPressed: ()=>Get.to(()=>const AllProducts())),
-              const SizedBox(height: TSizes.spaceBtwItems),
+                  //heading
+                  TSectionHeading(text: 'Popular Products',
+                      onPressed: () => Get.to(() => const AllProducts())),
+                  const SizedBox(height: TSizes.spaceBtwItems),
 
-              //Popular products
-              TGridView(
-                itemCount: 4,
-                itemBuilder: (BuildContext context, int index) {
-                  return const TProductCartVertical(
+                  //Popular products
+                  TGridView(
+                      itemCount: 4,
+                      itemBuilder: (BuildContext context, int index) {
+                        return const TProductCartVertical(
 
-                  );
-                }
+                        );
+                      }
+                  ),
+
+                ],
               ),
 
-            ],
-          ),
-
-          )
+            )
           ],
         ),
       ),

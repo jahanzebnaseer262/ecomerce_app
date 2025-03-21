@@ -1,3 +1,4 @@
+import 'package:e_commerce/data/repositries/authentication/authentication_repositry.dart';
 import 'package:e_commerce/features/authentication/controllers/login/login_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +26,7 @@ class TSocialButton extends StatelessWidget {
                   height: TSizes.iconMd,
                   width: TSizes.iconMd,
                   image: AssetImage(TImages.google)),
-              onPressed: () {  },
+              onPressed: () =>AuthenticationRepository.instance.googleSignInWithSupabase(),
             )
 
         ),

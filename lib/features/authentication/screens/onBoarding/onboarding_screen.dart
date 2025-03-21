@@ -49,10 +49,10 @@ class OnBoardingScreen extends StatelessWidget {
           const OnBoardingSkip(),
 
           //dot navigation smooth page indicator
-        const  OnBoardingDotNavigation(),
+          const  OnBoardingDotNavigation(),
 
           //Circular buttons
-       const   OnBoardingButton()
+          const   OnBoardingButton()
         ],
       ),
     );
@@ -68,12 +68,12 @@ class OnBoardingButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final dark= THelperFunctions.isDarkMode(context);
     return Positioned(
-    right: TSizes.defaultSpace,
+        right: TSizes.defaultSpace,
         bottom: TDeviceUtils.getBottomNavigationBarHeight(),
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
-            shape: const CircleBorder(),
-            backgroundColor: dark? TColors.primary:Colors.black
+              shape: const CircleBorder(),
+              backgroundColor: dark? TColors.primary:Colors.black
           ),
           onPressed: () {
             return OnboardingController.instance.nextPage();
@@ -85,5 +85,4 @@ class OnBoardingButton extends StatelessWidget {
     );
   }
 }
-
 
